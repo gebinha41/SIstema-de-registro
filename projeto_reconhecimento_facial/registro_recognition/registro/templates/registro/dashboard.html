@@ -1,0 +1,62 @@
+{% extends 'registro/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Sistema de Registro{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto;">
+    <div style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+        <h2 style="color: #2d7a3e; margin-bottom: 20px; font-size: 28px;">
+            👋 Bem-vindo, {{ user.first_name|default:user.username }}!
+        </h2>
+
+        {% if funcionario %}
+            <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h3 style="color: #2d7a3e; margin-bottom: 15px;">📋 Informações do Funcionário</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <p style="color: #666; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Nome</p>
+                        <p style="font-weight: 600; font-size: 16px;">{{ funcionario.nome }}</p>
+                    </div>
+                    
+                    <div>
+                        <p style="color: #666; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">CPF</p>
+                        <p style="font-weight: 600; font-size: 16px;">{{ funcionario.cpf }}</p>
+                    </div>
+                    
+                    <div>
+                        <p style="color: #666; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Nível de Acesso</p>
+                        <p style="font-weight: 600; font-size: 16px;">
+                            {% if funcionario.nivel_acesso == 1 %}
+                                🟢 Nível 1: Acesso concedido a indivíduos com permissão geral.
+                            {% elif funcionario.nivel_acesso == 2 %}
+                                🟡 Nível 2: Acesso restrito aos diretores de divisões específicas.
+                            {% elif funcionario.nivel_acesso == 3 %}
+                                🔴 Nível 3: Acesso exclusivo ao ministro do Meio Ambiente.
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <p style="color: #666; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Divisão</p>
+                        <p style="font-weight: 600; font-size: 16px;">{{ funcionario.divisao|default:"Não informado" }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div style="background: #eef; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #33c;">
+            <p style="color: #33c; font-weight: 600;">
+                ℹ️ Você está logado no sistema de reconhecimento facial do Ministério do Meio Ambiente.
+            </p>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <a href="{% url 'logout' %}" class="btn btn-primary" style="flex: 1; text-align: center;">
+                🚪 Fazer Logout
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

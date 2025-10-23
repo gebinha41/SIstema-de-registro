@@ -1,0 +1,85 @@
+{% extends 'registro/base.html' %}
+{% load static %}
+
+{% block title %}Login - Sistema de Registro{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2 class="form-title">🔐 Login</h2>
+
+    {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <!-- TAB 1: Login com Usuário e Senha -->
+    <div id="credentials-tab" class="tab-content">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Usuário *</label>
+                <input type="text" id="username" name="username" placeholder="Digite seu usuário" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha *</label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary btn-block">✓ Entrar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- TAB 2: Login com Reconhecimento Facial -->
+    <div id="facial-tab" class="tab-content hidden">
+        <div class="camera-instructions">
+            <p class="camera-instructions-text">📷 Posicione seu rosto em frente à câmera</p>
+        </div>
+
+        <div class="camera-container">
+            <video id="camera" autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="button-group-horizontal">
+            <button type="button" class="btn btn-primary" onclick="startCamera()">▶ Iniciar Câmera</button>
+            <button type="button" class="btn btn-secondary" onclick="captureAndRecognize()">📸 Capturar</button>
+            <button type="button" class="btn btn-secondary" onclick="stopCamera()">⏹ Parar</button>
+        </div>
+
+        <div id="recognition-status" class="recognition-status hidden">
+            <p id="status-message" class="status-message"></p>
+        </div>
+    </div>
+
+    <div class="link-center">
+        <p>Para criar uma conta, entre em contato com o administrador.</p>
+    </div>
+</div>
+
+<script>
+    // Controla as abas
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tab + '-tab').classList.remove('hidden');
+        btn.classList.add('active');
+    }
+
+    const csrfToken = "{{ csrf_token }}";
+    const reconhecerRostoUrl = "{% url 'reconhecer_rosto' %}";
+
+    // Funções de câmera (precisa implementar)
+    function startCamera() {
+        // Lógica para acessar câmera
+        console.log('Camera iniciada');
+    }
+
+    function captureAndRecognize() {
+        console.log('Captura e reconhecimento');
+    }
+
+    function stopCamera() {
+        console.log('Camera parada');
+    }
+</script>
+{% endblock %}
